@@ -1,4 +1,0 @@
-export GOPATH=/opt/stratux/go
-export GOROOT=$(go env | grep GOROOT | sed 's/[^=]*="\(.*\)"$/\1/g')
-export CGO_CFLAGS_ALLOW=-L/opt/stratux/stratux_src
-export PATH=$GOPATH/bin:$PATH
