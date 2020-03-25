@@ -142,6 +142,8 @@ sudo rm -f /etc/network/if-pre-up.d/wpasupplicant
 sudo rm -f /etc/network/if-down.d/wpasupplicant
 sudo rm -f /etc/network/if-post-down.d/wpasupplicant
 mkdir -p /opt/stratux/stratux_src/dump1090/public_html/data/
+sudo touch /var/lib/dhcp/dhcpd.leases
+sudo touch /etc/hostapd/hostapd.user
 }
 
 update_base
