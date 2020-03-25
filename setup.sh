@@ -93,7 +93,7 @@ export CGO_CFLAGS_ALLOW=-L/opt/stratux/stratux_src
 export PATH=$GOPATH/bin:$PATH
 
 cd /opt/stratux/stratux_src
-#make
+make
 sudo rm -f /usr/bin/dump1090
 sudo -E make install
 }
