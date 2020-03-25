@@ -18,6 +18,9 @@ Build your own stratux from scratch
    than AP mode), make sure you have the right config in
    ``/etc/wpa_supplicant/wpa_supplicant.conf``, and then run
    ``stratux-zero/reboot-as-sta.sh``.
+5. (optional) If you would like to see the FlightAware map UI for dump1090, run
+   ``stratux-zero/enable-fa-web.sh``, then it will be available at
+   ``192.168.10.1:8080``.
 
 Features
 --------
