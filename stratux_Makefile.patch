@@ -1,0 +1,12 @@
+diff --git a/Makefile b/Makefile
+index 79b10f5..ac65a5c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -22,7 +22,6 @@ fancontrol:
+ 	go build $(BUILDINFO_STATIC) -p 4 main/fancontrol.go main/equations.go main/cputemp.go
+ 
+ xdump1090:
+-	git submodule update --init
+ 	cd dump1090 && make
+ 
+ xdump978:

@@ -1,0 +1,35 @@
+diff --git a/wiringPi/Makefile b/wiringPi/Makefile
+index 287fa58..db2b519 100644
+--- a/wiringPi/Makefile
++++ b/wiringPi/Makefile
+@@ -70,8 +70,12 @@ OBJ	=	$(SRC:.c=.o)
+ all:		$(DYNAMIC)
+ 
+ .PHONY:	static
+-static:	
+-		$Q cat noMoreStatic
++static:		$(STATIC)
++
++$(STATIC):	$(OBJ)
++	$Q echo "[Link (Static)]"
++	$Q ar rcs $(STATIC) $(OBJ)
++	$Q ranlib $(STATIC)
+ 
+ $(DYNAMIC):	$(OBJ)
+ 	$Q echo "[Link (Dynamic)]"
+@@ -104,6 +108,15 @@ install:	$(DYNAMIC)
+ 	$Q ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so.$(VERSION)	$(DESTDIR)/lib/libwiringPi.so
+ 	$Q $(LDCONFIG)
+ 
++.PHONY:	install-static
++install-static:	$(STATIC)
++	$Q echo "[Install Headers]"
++	$Q install -m 0755 -d						$(DESTDIR)$(PREFIX)/include
++	$Q install -m 0644 $(HEADERS)					$(DESTDIR)$(PREFIX)/include
++	$Q echo "[Install Static Lib]"
++	$Q install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
++	$Q install -m 0755 libwiringPi.a				$(DESTDIR)$(PREFIX)/lib
++
+ .PHONY:	install-deb
+ install-deb:	$(DYNAMIC)
+ 	$Q echo "[Install Headers: deb]"
