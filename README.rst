@@ -27,4 +27,5 @@ Features
 
 - Uses up-to-date flightaware dump1090 implementation (instead of the very old one shipped with stratux).
 - Uses the latest wiringPi.
+- Uses dnsmasq instead of isc-dhcp-server.
 - Works on my Raspberry Pi Zero.
