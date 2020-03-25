@@ -54,8 +54,7 @@ patch < "$workdir/stratux_Makefile.patch" Makefile
 # build librtlsdr
 cd /opt/stratux
 git clone https://github.com/jpoirier/librtlsdr
-mv librtlsdr librtlsdr_src
-cd librtlsdr_src
+cd librtlsdr
 mkdir build
 cd build
 cmake ../
@@ -66,8 +65,7 @@ sudo ldconfig
 # build kalibrate-rtl
 cd /opt/stratux
 git clone https://github.com/steve-m/kalibrate-rtl
-mv kalibrate-rtl kalibrate-rtl_src
-cd kalibrate-rtl_src
+cd kalibrate-rtl
 ./bootstrap
 ./configure
 make
@@ -76,9 +74,9 @@ sudo make install
 # build wiringpi
 sudo apt-get purge wiringpi
 cd /opt/stratux
-git clone https://github.com/WiringPi/WiringPi.git
-mv WiringPi wiringPi_src
-cd wiringPi_src
+git clone https://github.com/WiringPi/WiringPi.git wiringPi
+cd wiringPi
+git checkout 5bbb6e3
 patch < "$workdir/wiringPi_Makefile.patch" wiringPi/Makefile
 sudo ./build
 cd wiringPi
@@ -101,7 +99,7 @@ sudo -E make install
 # copy various configs to their proper locations
 function deploy_config {
 sudo cp -f /opt/stratux/stratux_src/image/motd /etc/motd
-sudo cp -f /opt/stratux/stratux_src/image/dhcpd-not_smart.conf /etc/dhcp/dhcpd.conf
+#sudo cp -f /opt/stratux/stratux_src/image/dhcpd-not_smart.conf /etc/dhcp/dhcpd.conf
 sudo cp -f /opt/stratux/stratux_src/image/hostapd.conf /etc/hostapd/hostapd.conf
 sudo cp -f /opt/stratux/stratux_src/image/hostapd-edimax.conf /etc/hostapd/hostapd-edimax.conf
 sudo cp -f /opt/stratux/stratux_src/image/hostapd_manager.sh /usr/sbin/hostapd_manager.sh
@@ -112,10 +110,19 @@ sudo cp -f /opt/stratux/stratux_src/image/stratux-wifi.sh /usr/sbin/stratux-wifi
 sudo chmod 755 /usr/sbin/stratux-wifi.sh
 sudo cp -f /opt/stratux/stratux_src/image/sdr-tool.sh /usr/sbin/sdr-tool.sh
 sudo chmod 755 /usr/sbin/sdr-tool.sh
-sudo cp -f /opt/stratux/stratux_src/image/.rules /etc/udev/rules.d/
+#sudo cp -f /opt/stratux/stratux_src/image/.rules /etc/udev/rules.d/
 sudo rm -rf /usr/bin/fancontrol.py
 sudo cp -f /opt/stratux/stratux_src/image/stxAliases.txt /root/.stxAliases
-sudo cp -f /opt/stratux/stratux_src/image/stxAliases.txt /home/pi/.stxAliases
+
+cp -f /opt/stratux/stratux_src/image/stxAliases.txt /home/pi/.stxAliases
+cat > /home/pi/.bash_profile <<EOF
+# source the user's bashrc if it exists
+if [ -f "${HOME}/.bashrc" ] ; then
+	  source "${HOME}/.bashrc"
+fi
+source "$HOME/.stxAliases"
+EOF
+
 sudo cp -f /opt/stratux/stratux_src/image/rtl-sdr-blacklist.conf /etc/modprobe.d
 sudo cp -f /opt/stratux/stratux_src/test/screen/screen.py /usr/bin/stratux-screen.py
 sudo mkdir -p /etc/stratux-screen/
@@ -123,12 +130,12 @@ sudo cp -f /opt/stratux/stratux_src/test/screen/stratux-logo-64x64.bmp /etc/stra
 sudo cp -f /opt/stratux/stratux_src/test/screen/CnC_Red_Alert.ttf /etc/stratux-screen/CnC_Red_Alert.ttf
 sudo cp -f /opt/stratux/stratux_src/__lib__systemd__system__stratux.service /lib/systemd/system/stratux.service
 sudo cp -f /opt/stratux/stratux_src/__root__stratux-pre-start.sh /home/pi/stratux-pre-start.sh
-sudo ln -s /home/pi/stratux-pre-start.sh /root/stratux-pre-start.sh
+sudo ln -sf /home/pi/stratux-pre-start.sh /root/stratux-pre-start.sh
 sudo cp -f /opt/stratux/stratux_src/image/rc.local /etc/rc.local
 
-sudo cp -f hostapd.conf /etc/hostapd/hostapd.conf
-sudo cp -f dnsmasq.conf /etc/dnsmasq.conf
-sudo cp -f nginx_default /etc/nginx/sites-available/default
+sudo cp -f "$workdir/hostapd.conf" /etc/hostapd/hostapd.conf
+sudo cp -f "$workdir/dnsmasq.conf" /etc/dnsmasq.conf
+sudo cp -f "$workdir/nginx_default" /etc/nginx/sites-available/default
 sudo rm -f /etc/network/if-up.d/wpasupplicant
 sudo rm -f /etc/network/if-pre-up.d/wpasupplicant
 sudo rm -f /etc/network/if-down.d/wpasupplicant
@@ -142,4 +149,4 @@ prepare_stratux
 build_stratux
 deploy_config
 
-sudo ./reboot-as-ap.sh
+sudo "$workdir/reboot-as-ap.sh"
