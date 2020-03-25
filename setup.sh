@@ -113,6 +113,7 @@ sudo chmod 755 /usr/sbin/sdr-tool.sh
 #sudo cp -f /opt/stratux/stratux_src/image/.rules /etc/udev/rules.d/
 sudo rm -rf /usr/bin/fancontrol.py
 sudo cp -f /opt/stratux/stratux_src/image/stxAliases.txt /root/.stxAliases
+sudo cp -f /opt/stratux/stratux_src/image/logrotate_d_stratux /etc/logrotate.d/stratux
 
 cp -f /opt/stratux/stratux_src/image/stxAliases.txt /home/pi/.stxAliases
 cat > /home/pi/.bash_profile <<EOF
