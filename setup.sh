@@ -49,6 +49,7 @@ git clone --depth=1 --branch v1.6r1 https://github.com/cyoung/stratux.git stratu
 cd stratux_src
 git clone --depth=1 --branch stratux https://github.com/Determinant/dump1090-fa-stratux.git dump1090
 git submodule update --init --recursive goflying
+patch < "$workdir/stratux_Makefile.patch" Makefile
 
 # build librtlsdr
 cd /opt/stratux
@@ -92,8 +93,8 @@ export CGO_CFLAGS_ALLOW=-L/opt/stratux/stratux_src
 export PATH=$GOPATH/bin:$PATH
 
 cd /opt/stratux/stratux_src
-patch < "$workdir/stratux_Makefile.patch" Makefile
-make
+#make
+sudo rm -f /usr/bin/dump1090
 sudo -E make install
 }
 
@@ -135,8 +136,10 @@ sudo rm -f /etc/network/if-post-down.d/wpasupplicant
 mkdir -p /opt/stratux/stratux_src/dump1090/public_html/data/
 }
 
-#install_dep
-#prepare_stratux
+update_base
+install_dep
+prepare_stratux
 build_stratux
-#deploy_config
-#sudo ./reboot-as-ap.sh
+deploy_config
+
+sudo ./reboot-as-ap.sh
