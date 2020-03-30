@@ -152,4 +152,5 @@ prepare_stratux
 build_stratux
 deploy_config
 
+sudo "$workdir/disable-fa-web.sh"
 sudo "$workdir/reboot-as-ap.sh"
