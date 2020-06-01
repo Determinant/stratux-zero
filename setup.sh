@@ -50,6 +50,7 @@ cd stratux_src
 git clone --depth=1 --branch stratux https://github.com/Determinant/dump1090-fa-stratux.git dump1090
 git submodule update --init --recursive goflying
 patch < "$workdir/stratux_Makefile.patch" Makefile
+patch < "$workdir/stratux_network_go.patch" main/network.go
 
 # build librtlsdr
 cd /opt/stratux
